@@ -2,6 +2,13 @@
 
 This is a ussd service that provide a client who initiate the ussd service the ability to connect to hospital services, by it initiating a call to the selected party.
 
+## Pre-requisite
+
+Before running this application ensure that all dependicies are installed.
+You can achieve this by running:
+
+### `npm install`
+
 ## Available Scripts
 
 In the project directory, you can run:
