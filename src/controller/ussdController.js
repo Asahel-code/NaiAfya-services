@@ -6,7 +6,7 @@ const menu = new ussdMenu();
 
 menu.startState({
     run: () => {
-        menu.con('Welcome to NaiAfya. Choose your service:' +
+        menu.con('Welcome to Tibaconnect. Choose your service:' +
             '\n 1. Call a hospital' +
             '\n 2. Call an ambulance' +
             '\n 3. Exit');
