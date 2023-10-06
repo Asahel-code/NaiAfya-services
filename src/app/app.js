@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const app = express();
 const ussdRoutes = require('../routes/ussdRoutes');
@@ -12,6 +13,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use('/ussd', ussdRoutes);
 app.use('/connect_client', callRoutes);
 
-const PORT = 5000;
+const PORT = process.env.PORT;
 
 app.listen(PORT, () => console.log(`Server running on ${PORT} ...`));
