@@ -3,7 +3,7 @@ require('dotenv').config();
 
 const credentials = {
     apiKey: process.env.API_KEY,
-    username: process.env.APP_USERNAME
+    username: process.env.API_USERNAME
 }
 
 const AfricasTalking = require('africastalking')(credentials);

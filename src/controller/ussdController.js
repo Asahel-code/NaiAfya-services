@@ -21,16 +21,16 @@ menu.startState({
 menu.state('Call a hospital', {
     run: () => {
         menu.con('Choose a hospital of your choice:' +
-            '\n 1. Mama lucy' +
-            '\n 2. Kenyatta National Hospital' +
-            '\n 3. Mathare Hospital' +
-            '\n 4. Mbagathi Hospital');
+            '\n 1. Kericho District Hospital' +
+            '\n 2. Siloam' +
+            '\n 3. Home Nursing' +
+            '\n 4. Litein Mission Hospital');
     },
     next: {
-        '1': 'Mama lucy',
-        '2': 'Kenyatta National Hospital',
-        '3': 'Mathare Hospital',
-        '4': 'Bangathi Hospital'
+        '1': 'Kericho District Hospital',
+        '2': 'Siloam',
+        '3': 'Home Nursing',
+        '4': 'Litein Mission Hospital'
     }
 });
 
@@ -40,47 +40,47 @@ menu.state('Exit', {
     }
 });
 
-menu.state('Mama lucy', {
+menu.state('Kericho District Hospital', {
     run: () => {
         const client_number = menu.args.phoneNumber;
         const hospital_phonenumber = process.env.HOSPITAL_NUMBER; 
         callMamaLucy = new makeCall({ hospital_phonenumber, client_number });
 
         callMamaLucy.connectToService();
-        menu.end('Thank you for using our services, please be patient as we connect you to Mama lucy')
+        menu.end('Thank you for using our services, please be patient as we connect you to Kericho District Hospital')
     }
 });
 
-menu.state('Kenyatta National Hospital', {
+menu.state('Siloam', {
     run: () => {
         const client_number = menu.args.phoneNumber;
         const hospital_phonenumber = process.env.HOSPITAL_NUMBER;
         kenyatta = new makeCall({ hospital_phonenumber, client_number });
 
         kenyatta.connectToService();
-        menu.end('Thank you for using our services, please be patient as we connect you to Kenyatta National Hospital')
+        menu.end('Thank you for using our services, please be patient as we connect you to Siloam')
     }
 });
 
-menu.state('Mathare Hospital', {
+menu.state('Home Nursing', {
     run: () => {
         const client_number = menu.args.phoneNumber;
         const hospital_phonenumber = process.env.HOSPITAL_NUMBER;
         mathare = new makeCall({ hospital_phonenumber, client_number });
 
         mathare.connectToService();
-        menu.end('Thank you for using our services, please be patient as we connect you to Mathare Hospital')
+        menu.end('Thank you for using our services, please be patient as we connect you to Home Nursing')
     }
 });
 
-menu.state('Bangathi Hospital', {
+menu.state('Litein Mission Hospital', {
     run: () => {
         const client_number = menu.args.phoneNumber;
         const hospital_phonenumber = process.env.HOSPITAL_NUMBER;
         bangathi = new makeCall({ hospital_phonenumber, client_number });
 
         bangathi.connectToService();
-        menu.end('Thank you for using our services, please be patient as we connect you to Bangathi Hospital')
+        menu.end('Thank you for using our services, please be patient as we connect you to Litein Mission Hospital')
     }
 });
 
