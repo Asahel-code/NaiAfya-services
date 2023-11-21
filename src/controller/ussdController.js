@@ -1,38 +1,122 @@
 require('dotenv').config();
 const ussdMenu = require('ussd-builder');
 const { makeCall } = require('../utils/makeCall');
+const Ambulance = require('../models/Ambulance');
+const Hospital = require('../models/Hospital');
 
 const menu = new ussdMenu();
 
+let hospitals;
+let ambulances;
+
 menu.startState({
-    run: () => {
+    run: async () => {
         menu.con('Welcome to Tibaconnect. Choose your service:' +
             '\n 1. Call a hospital' +
             '\n 2. Call an ambulance' +
             '\n 3. Exit');
     },
     next: {
-        '1': 'Call a hospital',
-        '2': 'Call an ambulance',
+        '1': 'hospital',
+        '2': 'ambulance',
         '3': 'Exit'
     }
 });
 
-menu.state('Call a hospital', {
-    run: () => {
-        menu.con('Choose a hospital of your choice:' +
-            '\n 1. Kericho District Hospital' +
-            '\n 2. Siloam' +
-            '\n 3. Home Nursing' +
-            '\n 4. Litein Mission Hospital');
+menu.state('hospital', {
+    run: async () => {
+        try {
+            hospitals = await Hospital.find();
+
+            if (hospitals.length > 0) {
+                menu.con('Choose a hospital of your choice:\n' +
+                    hospitals.map((hospital, index) => (
+                        index + 1 + ": " + hospital.name + "\n"
+                    ))
+                );
+            } else {
+                menu.con('No hospitals found.');
+            }
+        } catch (error) {
+            console.error('Error fetching hospitals from MongoDB:', error?.message);
+            menu.end('An error occurred. Please try again later.');
+        }
     },
     next: {
-        '1': 'Kericho District Hospital',
-        '2': 'Siloam',
-        '3': 'Home Nursing',
-        '4': 'Litein Mission Hospital'
+        '*\\d+': "hospital.index"
     }
+
 });
+
+menu.state('hospital.index', {
+    run: async () => {
+        let hospitalIndex = menu.val;
+
+        if (hospitalIndex >= 1 && hospitalIndex <= hospitals.length) {
+            let selectedHospital = hospitals[hospitalIndex - 1];
+
+            console.log('User selected:', selectedHospital.name);
+            const client_number = menu.args.phoneNumber;
+            const hospital_phonenumber = selectedHospital.contactNumber;
+            const callHospital = new makeCall({ hospital_phonenumber, client_number });
+
+            callHospital.connectToService();
+            menu.end(`Thank you for using our services, please be patient as we connect you to ${selectedHospital.name}`)
+
+        } else {
+            menu.con('Invalid input. Please choose a hospital from the list.');
+        }
+    }
+
+});
+
+menu.state('ambulance', {
+    run: async () => {
+        try {
+            ambulances = await Ambulance.find();
+
+            if (ambulances.length > 0) {
+                menu.con('Choose an ambulance of your choice:\n' +
+                    ambulances.map((ambulance, index) => (
+                        index + 1 + ": " + ambulance.name + "\n"
+                    ))
+                );
+            } else {
+                menu.con('No ambulances found.');
+            }
+        } catch (error) {
+            console.error('Error fetching ambulances from MongoDB:', error?.message);
+            menu.end('An error occurred. Please try again later.');
+        }
+    },
+    next: {
+        '*\\d+': "ambulance.index"
+    }
+
+});
+
+menu.state('ambulance.index', {
+    run: async () => {
+        let ambulanceIndex = menu.val;
+
+        if (ambulanceIndex >= 1 && ambulanceIndex <= ambulances.length) {
+            let selectedAmbulance = ambulances[ambulanceIndex - 1];
+
+            console.log('User selected:', selectedAmbulance.name);
+            const client_number = menu.args.phoneNumber;
+            const ambulance_phonenumber = selectedAmbulance.contactNumber;
+            const callAmbulance = new makeCall({ ambulance_phonenumber, client_number });
+
+            callAmbulance.connectToService();
+            menu.end(`Thank you for using our services, please be patient as we connect you to ${selectedAmbulance.name}`)
+
+        } else {
+            menu.con('Invalid input. Please choose an ambulance from the list.');
+        }
+    }
+
+});
+
 
 menu.state('Exit', {
     run: () => {
@@ -40,60 +124,6 @@ menu.state('Exit', {
     }
 });
 
-menu.state('Kericho District Hospital', {
-    run: () => {
-        const client_number = menu.args.phoneNumber;
-        const hospital_phonenumber = process.env.HOSPITAL_NUMBER; 
-        callMamaLucy = new makeCall({ hospital_phonenumber, client_number });
-
-        callMamaLucy.connectToService();
-        menu.end('Thank you for using our services, please be patient as we connect you to Kericho District Hospital')
-    }
-});
-
-menu.state('Siloam', {
-    run: () => {
-        const client_number = menu.args.phoneNumber;
-        const hospital_phonenumber = process.env.HOSPITAL_NUMBER;
-        kenyatta = new makeCall({ hospital_phonenumber, client_number });
-
-        kenyatta.connectToService();
-        menu.end('Thank you for using our services, please be patient as we connect you to Siloam')
-    }
-});
-
-menu.state('Home Nursing', {
-    run: () => {
-        const client_number = menu.args.phoneNumber;
-        const hospital_phonenumber = process.env.HOSPITAL_NUMBER;
-        mathare = new makeCall({ hospital_phonenumber, client_number });
-
-        mathare.connectToService();
-        menu.end('Thank you for using our services, please be patient as we connect you to Home Nursing')
-    }
-});
-
-menu.state('Litein Mission Hospital', {
-    run: () => {
-        const client_number = menu.args.phoneNumber;
-        const hospital_phonenumber = process.env.HOSPITAL_NUMBER;
-        bangathi = new makeCall({ hospital_phonenumber, client_number });
-
-        bangathi.connectToService();
-        menu.end('Thank you for using our services, please be patient as we connect you to Litein Mission Hospital')
-    }
-});
-
-menu.state('Call an ambulance', {
-    run: () => {
-        const client_number = menu.args.phoneNumber;
-        const hospital_phonenumber = process.env.HOSPITAL_NUMBER;
-        ambulance = new makeCall({ hospital_phonenumber, client_number });
-
-        ambulance.connectToService();
-        menu.end('Thank you for using our services, please be patient as we connect you to an ambulance service')
-    }
-});
 
 const connectToUssdService = (req, res) => {
     menu.run(req.body, ussdResult => [
