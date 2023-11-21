@@ -28,11 +28,13 @@ class makeCall {
         let callAction = `<Response><Say>Please wait as we connect you to a patient wishing to reachout</Say></Response>`;
 
         const options = { callFrom: process.env.AT_VIRTUALNUMBER, callTo: [this.hospital_phonenumber] }
-        voice.call(options)
-            .then(() => {
-                return callAction;
-            })
-            .catch(console.log);
+        try {
+            await voice.call(options);
+            return callAction;
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
     }
 
 
