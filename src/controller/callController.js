@@ -6,7 +6,7 @@ const connectClientToAService = async (req, res) => {
     <Response>
         <Dial 
         phoneNumbers="${process.env.CLIENT_NUMBER}"
-        ringbackTone="https://5bb1-197-237-66-112.ngrok-free.app/music/playme.mp3"
+        ringbackTone="https://hospital-reachout-service.onrender.com/music/playme.mp3"
         />
     </Response>`
     return res.send(responseAction);
