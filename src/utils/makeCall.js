@@ -11,14 +11,14 @@ const AfricasTalking = require('africastalking')(credentials);
 const voice = AfricasTalking.VOICE;
 
 class makeCall {
-    constructor({ hospital_phonenumber, client_number }) {
-        if (!hospital_phonenumber) {
+    constructor({ service_phone_number, client_number }) {
+        if (!service_phone_number) {
             throw new Error(
-                'Missing required parameters: hospital_phonenumber'
+                'Missing required parameters: service_phonenumber'
             );
         }
 
-        this.hospital_phonenumber = hospital_phonenumber;
+        this.service_phone_number = service_phone_number;
         this.client_number = client_number;
     }
 
@@ -27,7 +27,7 @@ class makeCall {
     async connectToService() {
         let callAction = `<Response><Say>Please wait as we connect you to a patient wishing to reachout</Say></Response>`;
 
-        const options = { callFrom: process.env.AT_VIRTUALNUMBER, callTo: [this.hospital_phonenumber] }
+        const options = { callFrom: process.env.AT_VIRTUAL_NUMBER, callTo: [this.service_phone_number] }
         try {
             await voice.call(options);
             return callAction;

@@ -14,6 +14,7 @@ const ambulanceRoutes = require('../routes/ambulanceRoutes');
 const hospitalRoutes = require('../routes/hospitalRoutes');
 const registerRoutes = require('../routes/registerRoutes');
 const countRoutes = require('../routes/countRoutes');
+const sessionRoutes = require('../routes/sessionRoutes');
 
 // Connect to MongoDB
 connectDB();
@@ -34,6 +35,8 @@ app.use(express.json());
 // built-in middleware to handle urlencoded form data
 app.use(express.urlencoded({ extended: false }));
 
+app.use("/music", express.static('music'));
+
 // health check end point
 app.get('/health', (req, res) => {
   res.status(200).json("OK");
@@ -46,6 +49,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/ambulance', ambulanceRoutes);
 app.use('/api/hospital', hospitalRoutes);
 app.use('/api/count', countRoutes);
+app.use('/api/sessions', sessionRoutes);
 
 const staticPath = path.resolve('./');
 app.use(express.static(path.join(staticPath, 'dashboard/dist')));

@@ -58,28 +58,42 @@ menu.state('hospital.index', {
             let selectedHospital = hospitals[hospitalIndex - 1];
 
             const client_number = menu.args.phoneNumber;
-            const hospital_phonenumber = selectedHospital.contactNumber;
-            const callHospital = new makeCall({ hospital_phonenumber, client_number });
+            const service_phone_number = selectedHospital.contactNumber;
+            const callHospital = new makeCall({ service_phone_number, client_number });
 
             callHospital.connectToService()
                 .then(async () => {
                     const newHospitalSession = new HospitalSession({
-                        hospital: selectedHospital._id
+                        hospital: selectedHospital._id,
+                        status: "success"
                     });
-                
+
                     try {
                         await newHospitalSession.save();
-                
+
                         menu.end(`Thank you for using our services, please be patient as we connect you to ${selectedHospital.name}`)
-            
+
                     } catch (error) {
                         console.error('Error adding hospital session:', error?.message);
-                    menu.end('An error occurred. Please try again later.');
+                        menu.end('An error occurred. Please try again later.');
                     }
                 })
-                .catch((error) => {
-                    console.error('Error initiating a call:', error?.message);
-                    menu.end('An error occurred. Please try again later.');
+                .catch(async (error) => {
+                    const newHospitalSession = new HospitalSession({
+                        hospital: selectedHospital._id,
+                        status: "failed"
+                    });
+
+                    try {
+                        await newHospitalSession.save();
+
+                        console.error('Error initiating a call:', error?.message);
+                        menu.end('An error occurred. Please try again later.');
+
+                    } catch (error) {
+                        console.error('Error adding hospital session:', error?.message);
+                        menu.end('An error occurred. Please try again later.');
+                    }
                 })
         } else {
             menu.con('Invalid input. Please choose a hospital from the list.');
@@ -120,31 +134,44 @@ menu.state('ambulance.index', {
         if (ambulanceIndex >= 1 && ambulanceIndex <= ambulances.length) {
             let selectedAmbulance = ambulances[ambulanceIndex - 1];
 
-            console.log('User selected:', selectedAmbulance.name);
             const client_number = menu.args.phoneNumber;
-            const ambulance_phonenumber = selectedAmbulance.contactNumber;
-            const callAmbulance = new makeCall({ ambulance_phonenumber, client_number });
+            const service_phone_number = selectedAmbulance.contactNumber;
+            const callAmbulance = new makeCall({ service_phone_number, client_number });
 
             callAmbulance.connectToService()
-            .then(async () => {
-                const newAmbulanceSession = new AmbulanceSession({
-                    ambulance: selectedAmbulance._id
-                });
-            
-                try {
-                    await newAmbulanceSession.save();
-            
-                    menu.end(`Thank you for using our services, please be patient as we connect you to ${selectedAmbulance.name}`)
-        
-                } catch (error) {
-                    console.error('Error adding ambulance session:', error?.message);
-                menu.end('An error occurred. Please try again later.');
-                }
-            })
-            .catch((error) => {
-                console.error('Error initiating a call:', error?.message);
-                menu.end('An error occurred. Please try again later.');
-            })
+                .then(async () => {
+                    const newAmbulanceSession = new AmbulanceSession({
+                        ambulance: selectedAmbulance._id,
+                        status: "success"
+                    });
+
+                    try {
+                        await newAmbulanceSession.save();
+
+                        menu.end(`Thank you for using our services, please be patient as we connect you to ${selectedAmbulance.name}`)
+
+                    } catch (error) {
+                        console.error('Error adding ambulance session:', error?.message);
+                        menu.end('An error occurred. Please try again later.');
+                    }
+                })
+                .catch(async (error) => {
+                    const newAmbulanceSession = new AmbulanceSession({
+                        ambulance: selectedAmbulance._id,
+                        status: "failed"
+                    });
+
+                    try {
+                        await newAmbulanceSession.save();
+
+                        console.error('Error initiating a call:', error?.message);
+                        menu.end('An error occurred. Please try again later.');
+
+                    } catch (error) {
+                        console.error('Error adding hospital session:', error?.message);
+                        menu.end('An error occurred. Please try again later.');
+                    }
+                })
 
         } else {
             menu.con('Invalid input. Please choose an ambulance from the list.');

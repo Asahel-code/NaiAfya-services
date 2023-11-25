@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { Box, Center } from "@chakra-ui/react";
+import { Box, Center, Select } from "@chakra-ui/react";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 
 const CustomInput = ({
@@ -58,6 +58,50 @@ const CustomInput = ({
             )}
         </Box>
     )
+}
+
+export const CustomSelect = ({
+    placeholder,
+    value,
+    handleChange,
+    name,
+    width,
+    children,
+}) => {
+    return (
+        <Box
+            display={"flex"}
+            gap={"3"}
+            alignItems={"center"}
+            width={width ? width : 3 / 4}
+            borderWidth={"1px"}
+            overflow={"hidden"}
+            borderRadius={"md"}
+            borderColor={"#161433"}
+        >
+            <Select
+                variant="outline"
+                placeholder={placeholder}
+                borderWidth={0}
+                w={"full"}
+                m={"0"}
+                onChange={handleChange}
+                value={value}
+                name={name}
+            >
+                {children}
+            </Select>
+        </Box>
+    );
+}
+
+CustomSelect.propTypes = {
+    placeholder: PropTypes.string,
+    value: PropTypes.string,
+    handleChange: PropTypes.func,
+    name: PropTypes.string,
+    children: PropTypes.array,
+    width: PropTypes.string
 }
 
 
