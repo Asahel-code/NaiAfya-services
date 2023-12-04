@@ -3,6 +3,8 @@ import { useState } from 'react';
 import { MdOutlineDashboard, } from "react-icons/md";
 import { FaHospitalSymbol } from "react-icons/fa";
 import { BiSolidAmbulance } from "react-icons/bi";
+import { GiPoliceCar } from "react-icons/gi";
+import { MdFireTruck } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
 import { Center } from "@chakra-ui/react";
 
@@ -94,4 +96,14 @@ const menu_list = [
         to: "/ambulances",
         icon: <BiSolidAmbulance />
     },
+    {
+        name: "Police Station",
+        to: "/police_stations",
+        icon: < GiPoliceCar />
+    },
+    {
+        name: "Fire fighter",
+        to: "/fire_fighters",
+        icon: <MdFireTruck />
+    }
 ]

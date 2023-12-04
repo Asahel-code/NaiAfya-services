@@ -9,6 +9,8 @@ export const useCount = () => {
     const toast = useToast();
     const [ambulanceCount, setAmbulanceCount] = useState(0);
     const [hospitalCount, setHospitalCount] = useState(0);
+    const [fireFighterCount, setFireFighterCount] = useState(0);
+    const [policeStationCount, setPoliceStationCount] = useState(0);
     const [stateLoading, setStateLoading] = useState(true);
 
     useEffect(() => {
@@ -17,6 +19,8 @@ export const useCount = () => {
                 .then((response) => {
                     setAmbulanceCount(response?.ambulanceCount);
                     setHospitalCount(response?.hospitalCount);
+                    setFireFighterCount(response?.fireFighterCount);
+                    setPoliceStationCount(response?.policeStationCount);
                     setStateLoading(false);
                 })
                 .catch((error) => {
@@ -30,5 +34,5 @@ export const useCount = () => {
         fetchCount();
     }, [toast]);
 
-    return { stateLoading, ambulanceCount, hospitalCount }
+    return { stateLoading, ambulanceCount, hospitalCount, fireFighterCount, policeStationCount }
 }

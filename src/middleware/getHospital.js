@@ -5,7 +5,7 @@ const getHospital = async (req, res, next) => {
         params: { hospitalId },
     } = req;
 
-    let hospital
+    let hospital;
 
     if (!hospitalId) {
         res.status(400).json({message: "Parameter hospital id can not be empty" });

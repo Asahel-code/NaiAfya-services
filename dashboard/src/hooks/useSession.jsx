@@ -121,3 +121,122 @@ export const useAmbulanceSession = (ambulanceId, startDate) => {
 
     return { ambulanceSessionStateLoading, ambulanceChartData }
 }
+
+export const useFireFighterSession = (fireFighterId, startDate) => {
+
+    const toast = useToast();
+    const [fireFighterSuccessSessionCount, setFireFighterSuccessSessionCount] = useState(0);
+    const [fireFighterFailedSessionCount, setFireFighterFailedSessionCount] = useState(0);
+    const [fireFighterSessionStateLoading, setFireFighterSessionStateLoading] = useState(true);
+
+    const currentDate = useMemo(() => new Date(), []);
+
+    const endDate = currentDate.toISOString();
+
+    useEffect(() => {
+        const fetchFireFighterSessions = async () => {
+            await SessionServices.getFireFighterSession(fireFighterId, startDate ? startDate : new Date(`${currentDate.getFullYear()}-${(currentDate.getMonth() + 1)}-01`).toISOString(), endDate)
+                .then((response) => {
+                    setFireFighterSuccessSessionCount(response.successful);
+                    setFireFighterFailedSessionCount(response.failed)
+                    setFireFighterSessionStateLoading(false);
+                })
+                .catch((error) => {
+                    toast({
+                        ...toastProps,
+                        description: getError(error),
+                        status: "error"
+                    })
+                })
+        }
+        fetchFireFighterSessions();
+    }, [toast, fireFighterId, startDate, endDate, currentDate]);
+
+    const fireFighterChartData = useMemo(
+        () => ({
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: false,
+                    },
+                },
+            },
+
+            data: {
+                labels: ["successful", "failed"],
+                datasets: [
+                    {
+                        label: "Fire fighter session",
+                        data: [fireFighterSuccessSessionCount, fireFighterFailedSessionCount],
+                        backgroundColor: ["#16AC52", "#B50909"],
+                    },
+                ],
+                text: "35",
+            },
+        }), [fireFighterFailedSessionCount, fireFighterSuccessSessionCount]
+    );
+
+    return { fireFighterSessionStateLoading, fireFighterChartData }
+}
+
+export const usePoliceStationSession = (policeStationId, startDate) => {
+
+    const toast = useToast();
+    const [policeStationSuccessSessionCount, setPoliceStationSuccessSessionCount] = useState(0);
+    const [policeStationFailedSessionCount, setPoliceStationFailedSessionCount] = useState(0);
+    const [policeStationSessionStateLoading, setPoliceStationSessionStateLoading] = useState(true);
+
+    const currentDate = useMemo(() => new Date(), []);
+
+    const endDate = currentDate.toISOString();
+
+    useEffect(() => {
+        const fetchPoliceStationSessions = async () => {
+            await SessionServices.getpoliceStationSession(policeStationId, startDate ? startDate : new Date(`${currentDate.getFullYear()}-${(currentDate.getMonth() + 1)}-01`).toISOString(), endDate)
+                .then((response) => {
+                    setPoliceStationSuccessSessionCount(response.successful);
+                    setPoliceStationFailedSessionCount(response.failed)
+                    setPoliceStationSessionStateLoading(false);
+                })
+                .catch((error) => {
+                    toast({
+                        ...toastProps,
+                        description: getError(error),
+                        status: "error"
+                    })
+                })
+        }
+        fetchPoliceStationSessions();
+    }, [toast, policeStationId, startDate, endDate, currentDate]);
+
+    const policeStationChartData = useMemo(
+        () => ({
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: false,
+                    },
+                },
+            },
+
+            data: {
+                labels: ["successful", "failed"],
+                datasets: [
+                    {
+                        label: "Police station session",
+                        data: [policeStationSuccessSessionCount, policeStationFailedSessionCount],
+                        backgroundColor: ["#16AC52", "#B50909"],
+                    },
+                ],
+                text: "35",
+            },
+        }), [policeStationFailedSessionCount, policeStationSuccessSessionCount]
+    );
+
+    return { policeStationSessionStateLoading, policeStationChartData }
+}
+
+
+

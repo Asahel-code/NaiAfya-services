@@ -12,9 +12,12 @@ const callRoutes = require('../routes/callRoutes');
 const authRoutes = require('../routes/authRoutes');
 const ambulanceRoutes = require('../routes/ambulanceRoutes');
 const hospitalRoutes = require('../routes/hospitalRoutes');
+const fireFighterRoutes = require('../routes/fireFighterRoutes');
+const policeStationRoutes = require('../routes/policeStationRoutes');
 const registerRoutes = require('../routes/registerRoutes');
 const countRoutes = require('../routes/countRoutes');
 const sessionRoutes = require('../routes/sessionRoutes');
+
 
 // Connect to MongoDB
 connectDB();
@@ -48,6 +51,8 @@ app.use('/api/register', registerRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/ambulance', ambulanceRoutes);
 app.use('/api/hospital', hospitalRoutes);
+app.use('/api/fire_fighter', fireFighterRoutes);
+app.use('/api/police_station', policeStationRoutes);
 app.use('/api/count', countRoutes);
 app.use('/api/sessions', sessionRoutes);
 

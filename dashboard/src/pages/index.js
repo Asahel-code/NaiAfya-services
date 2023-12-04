@@ -5,3 +5,7 @@ export * from './ViewSpecifcAmbulance';
 export * from './ViewSpecificHospital';
 export * from  './Login';
 export * from './UserProfile';
+export * from './FireFighter';
+export * from './ViewSpecificFireFighter';
+export * from './PoliceStation';
+export * from './ViewSpecificPoliceStation';
