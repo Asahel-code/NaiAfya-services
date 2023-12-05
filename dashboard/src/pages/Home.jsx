@@ -16,21 +16,25 @@ export const Home = () => {
         {
             title: "Hospitals",
             count: hospitalCount,
+            link: "/hospitals",
             icon: <FaHospitalSymbol className="text-4xl" />
         },
         {
             title: "Ambulances",
             count: ambulanceCount,
+            link: "/ambulances",
             icon: <BiSolidAmbulance className="text-4xl" />
         },
         {
             title: "Fire fighter",
             count: fireFighterCount,
+            link: "/fire_fighters",
             icon: <MdFireTruck className="text-4xl" />
         },
         {
             title: "Police station",
             count: policeStationCount,
+            link: "/police_stations",
             icon: <GiPoliceCar className="text-4xl" />
         },
 
@@ -52,6 +56,7 @@ export const Home = () => {
                                     key={index}
                                     serviceName={activity.title}
                                     count={activity.count}
+                                    link={activity.link}
                                     icon={activity.icon}
                                 />
                             ))}
