@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 const Card = ({ serviceName, count, link, icon }) => {
     return (
         <Link to={link}>
-            <div className='w-60 h-60 shadow-md bg-white rounded-md flex items-center justify-center'>
+            <div className='w-60 h-60 shadow-md bg-white rounded-md flex items-center justify-center hover:scale-105 transition-all'>
                 <div className=''>
                     <div className='flex justify-center mb-10 text-secondary_color'>
                         {icon}
